@@ -40,7 +40,7 @@ namespace DatingApp.API.Data
             }
         }
 
-        public Task<User> UserExists(string username)
+        public Task<bool> UserExists(string username)
         {
             throw new System.NotImplementedException();
         }
