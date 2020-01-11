@@ -1,4 +1,5 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using DatingApp.API.Models;
 
@@ -10,7 +11,7 @@ namespace DatingApp.API.Data
 
         public AuthRepository(DataContext context)
         {
-            this._context = context;
+            _context = context;
 
         }
         public Task<User> Login(string username, string password)
@@ -40,9 +41,11 @@ namespace DatingApp.API.Data
             }
         }
 
-        public Task<bool> UserExists(string username)
+        public async Task<bool> UserExists(string username)
         {
-            throw new System.NotImplementedException();
+            if (await _context.Users.AnyAsync(x => x.Username.Equals(username)))
+                return true;
+            return false;
         }
     }
 }
