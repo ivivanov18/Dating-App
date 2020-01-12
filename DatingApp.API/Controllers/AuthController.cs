@@ -69,7 +69,7 @@ namespace DatingApp.API.Controllers
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(1),
-
+                SigningCredentials = signingCredentials
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             // userFromRepo.Token = tokenHandler.WriteToken(token);
