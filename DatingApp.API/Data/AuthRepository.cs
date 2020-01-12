@@ -14,9 +14,31 @@ namespace DatingApp.API.Data
             _context = context;
 
         }
-        public Task<User> Login(string username, string password)
+        public async Task<User> Login(string username, string password)
         {
-            throw new System.NotImplementedException();
+            var userFromRepo = await _context.Users.FirstOrDefaultAsync(x => x.Username == username.ToLower());
+
+            if (userFromRepo == null)
+                return null;
+
+            if (!VerifyPasswordHashEqual(password, userFromRepo.Password, userFromRepo.Salt))
+                return null;
+
+            return userFromRepo;
+        }
+
+        private bool VerifyPasswordHashEqual(string password, byte[] passwordHash, byte[] salt)
+        {
+            using (var hash = new System.Security.Cryptography.HMACSHA512(salt))
+            {
+                var computedPasswordHash = hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedPasswordHash.Length; i++)
+                {
+                    if (computedPasswordHash[i] != passwordHash[i])
+                        return false;
+                }
+                return true;
+            }
         }
 
         public async Task<User> Register(User user, string password)

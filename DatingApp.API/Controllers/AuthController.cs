@@ -3,6 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System;
 
 namespace DatingApp.API.Controllers
 {
@@ -11,8 +17,10 @@ namespace DatingApp.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _repo;
-        public AuthController(IAuthRepository repo)
+        private readonly IConfiguration _config;
+        public AuthController(IAuthRepository repo, IConfiguration config)
         {
+            _config = config;
             _repo = repo;
         }
 
@@ -40,6 +48,36 @@ namespace DatingApp.API.Controllers
             return StatusCode(201);
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
+        {
+            var userFromRepo = await _repo.Login(userForLoginDto.Username, userForLoginDto.Password);
 
+            if (userFromRepo == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
+                new Claim(ClaimTypes.Name, userFromRepo.Username),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddDays(1),
+
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            // userFromRepo.Token = tokenHandler.WriteToken(token);
+
+            return Ok(new
+            {
+                token = tokenHandler.WriteToken(token)
+            });
+        }
     }
 }
