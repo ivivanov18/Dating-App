@@ -6,12 +6,19 @@
         <input type="text" class="form-control" placeholder="Username" />
     </div>
 
+    <select class="form-group" *ngIf="valuesFromHome">
+        <option class="form-control" *ngFor="let value of valuesFromHome">
+            {{ value.name }}
+        </option>
+    </select>
     <div class="form-group">
         <input type="password" class="form-control" placeholder="Password" />
     </div>
 
     <div class="form-group text-center">
         <button class="btn btn-success" type="submit">Register</button>
-        <button class="btn btn-default" type="button">Cancel</button>
+        <button class="btn btn-default" type="button" (click)="cancel()">
+            Cancel
+        </button>
     </div>
 </form>

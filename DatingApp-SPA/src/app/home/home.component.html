@@ -7,7 +7,7 @@
         <div class="text-center">
             <button
                 class="btn btn-primary btn-lg mr-2"
-                (click)="toggleRegisterMode()"
+                (click)="toggleRegisterMode(true)"
             >
                 Register
             </button>
@@ -18,7 +18,10 @@
     <div *ngIf="registerMode" class="container">
         <div class="row justify-content-center">
             <div class="col-4">
-                <app-register></app-register>
+                <app-register
+                    [valuesFromHome]="values"
+                    (cancelRegister)="toggleRegisterMode($event)"
+                ></app-register>
             </div>
         </div>
     </div>
