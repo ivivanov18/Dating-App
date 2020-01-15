@@ -1,18 +1,24 @@
-<form>
+<form (ngSubmit)="register()">
     <h2 class="text-center text-primary">Sign Up</h2>
     <hr />
 
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="Username" />
+        <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="model.username"
+            name="username"
+            placeholder="Username"
+        />
     </div>
-
-    <select class="form-group" *ngIf="valuesFromHome">
-        <option class="form-control" *ngFor="let value of valuesFromHome">
-            {{ value.name }}
-        </option>
-    </select>
     <div class="form-group">
-        <input type="password" class="form-control" placeholder="Password" />
+        <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="model.password"
+            name="password"
+            placeholder="Password"
+        />
     </div>
 
     <div class="form-group text-center">
