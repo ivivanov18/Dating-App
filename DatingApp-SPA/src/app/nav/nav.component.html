@@ -16,7 +16,7 @@
     </ul>
     <div class="dropdown" *ngIf="isLoggedIn()">
         <a class="dropdown-toggle">
-            Dropdown link
+            Welcome {{ authService.decodedToken?.unique_name }}
         </a>
         <div class="dropdown-menu">
             <a class="dropdown-item" href="#"
