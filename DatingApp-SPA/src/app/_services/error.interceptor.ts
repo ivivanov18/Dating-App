@@ -35,6 +35,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                         typeof serverError.errors === 'object'
                     ) {
                         const { errors } = serverError;
+                        
                         for (const key in Object.keys(errors)) {
                             if (errors.hasOwnProperty(key)) {
                                 modalStateErrors +=
