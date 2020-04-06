@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using DatingApp.API.Models;
