@@ -25,7 +25,7 @@ namespace DatingApp.API.Migrations
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AddColumn<string>(
-                name: "Genger",
+                name: "Gender",
                 table: "Users",
                 nullable: true);
 
@@ -56,7 +56,7 @@ namespace DatingApp.API.Migrations
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Photo",
+                name: "Photos",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -65,29 +65,29 @@ namespace DatingApp.API.Migrations
                     Description = table.Column<string>(nullable: true),
                     DateAdded = table.Column<DateTime>(nullable: false),
                     IsMain = table.Column<bool>(nullable: false),
-                    UserId = table.Column<int>(nullable: true)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Photo", x => x.Id);
+                    table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photo_Users_UserId",
+                        name: "FK_Photos_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_UserId",
-                table: "Photo",
+                name: "IX_Photos_UserId",
+                table: "Photos",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Photo");
+                name: "Photos");
 
             migrationBuilder.DropColumn(
                 name: "City",
@@ -102,7 +102,7 @@ namespace DatingApp.API.Migrations
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "Genger",
+                name: "Gender",
                 table: "Users");
 
             migrationBuilder.DropColumn(

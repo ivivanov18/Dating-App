@@ -9,7 +9,7 @@ namespace DatingApp.API.Models
         public string Username { get; set; }
         public byte[] Password { get; set; }
         public byte[] Salt { get; set; }
-        public string Genger { get; set; }
+        public string Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string KnownAs { get; set; }
         public DateTime CreatedAt { get; set; }
