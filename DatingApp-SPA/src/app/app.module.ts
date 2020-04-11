@@ -14,9 +14,10 @@ import { AuthService } from './_services/auth.service';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { MemberListComponent } from './member-list/member-list.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ListsComponent } from './lists/lists.component';
+import { MemberComponent } from './members/member/member.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { ListsComponent } from './lists/lists.component';
         MemberListComponent,
         MessagesComponent,
         ListsComponent,
+        MemberComponent,
     ],
     imports: [
         BrowserModule,
