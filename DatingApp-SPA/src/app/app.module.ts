@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 
@@ -41,6 +41,7 @@ const tokenGetter = () => localStorage.getItem('token');
         FormsModule,
         BrowserAnimationsModule,
         BsDropdownModule.forRoot(),
+        TabsModule.forRoot(),
         RouterModule.forRoot(appRoutes, { enableTracing: true }),
         JwtModule.forRoot({
             config: {
