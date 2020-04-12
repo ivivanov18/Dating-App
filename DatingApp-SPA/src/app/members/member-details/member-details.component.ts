@@ -11,20 +11,11 @@ import { AlertifyService } from 'src/app/_services/alertify.service';
 })
 export class MemberDetailsComponent implements OnInit {
     user: User;
-    constructor(
-        private userService: UserService,
-        private alertify: AlertifyService,
-        private route: ActivatedRoute
-    ) {}
+    constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
-        this.loadUser();
-    }
-
-    loadUser(): void {
-        this.userService.getUser(+this.route.snapshot.params['id']).subscribe(
-            (user: User) => (this.user = user),
-            (error) => this.alertify.error(error)
-        );
+        this.route.data.subscribe((data) => {
+            this.user = data.user;
+        });
     }
 }

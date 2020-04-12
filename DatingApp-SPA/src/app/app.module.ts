@@ -1,3 +1,5 @@
+import { MemberListResolver } from './_resolvers/member-list.resolver';
+import { MemberDetailsResolver } from './_resolvers/member-details.resolver';
 import { MemberDetailsComponent } from './members/member-details/member-details.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -51,7 +53,12 @@ const tokenGetter = () => localStorage.getItem('token');
             },
         }),
     ],
-    providers: [ErrorInterceptorProvider, AuthService],
+    providers: [
+        ErrorInterceptorProvider,
+        AuthService,
+        MemberDetailsResolver,
+        MemberListResolver,
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
