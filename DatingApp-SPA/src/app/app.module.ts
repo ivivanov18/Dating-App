@@ -1,3 +1,4 @@
+import { MemberDetailsComponent } from './members/member-details/member-details.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -32,6 +33,7 @@ const tokenGetter = () => localStorage.getItem('token');
         MessagesComponent,
         ListsComponent,
         MemberComponent,
+        MemberDetailsComponent,
     ],
     imports: [
         BrowserModule,
