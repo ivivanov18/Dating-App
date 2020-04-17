@@ -9,7 +9,6 @@ using DatingApp.API.Dtos;
 using DatingApp.API.Helpers;
 using DatingApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -17,6 +16,7 @@ namespace DatingApp.API.Controllers
 {
     [Authorize]
     [Route("api/users/{userId}/photos")]
+    [ApiController]
     public class PhotosController : ControllerBase
     {
         private readonly IDatingRepository _datingRepository;
@@ -40,13 +40,13 @@ namespace DatingApp.API.Controllers
         {
             var photoFromRepo = await _datingRepository.GetPhoto(id);
 
-            var photoForReturnDto = _mapper.Map<PhotoToReturnDto>(photo);
+            var photoForReturnDto = _mapper.Map<PhotoToReturnDto>(photoFromRepo);
 
             return Ok(photoForReturnDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPhotoForUser(int userId, PhotoForCreateDto photoForCreationDto)
+        public async Task<IActionResult> AddPhotoForUser(int userId, [FromForm]PhotoForCreateDto photoForCreationDto)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
@@ -55,35 +55,38 @@ namespace DatingApp.API.Controllers
 
             var file = photoForCreationDto.File;
 
-            var uploadResults = new ImageUploadResult();
-
-            using (var stream = file.OpenReadStream())
+            if (file != null && file.Length > 0)
             {
-                var uploadParams = new ImageUploadParams()
+                var uploadResults = new ImageUploadResult();
+
+                using (var stream = file.OpenReadStream())
                 {
-                    File = new FileDescription(file.Name, stream),
-                    Transformation = new Transformation()
-                                        .Width(500)
-                                        .Height(500)
-                                        .Crop("fill")
-                                        .Gravity("face")
-                };
-                uploadResults = _cloudinary.Upload(uploadParams);
-            }
-            photoForCreationDto.Url = uploadResults.Uri.ToString();
-            photoForCreationDto.PublicId = uploadResults.PublicId;
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(file.Name, stream),
+                        Transformation = new Transformation()
+                                            .Width(500)
+                                            .Height(500)
+                                            .Crop("fill")
+                                            .Gravity("face")
+                    };
+                    uploadResults = _cloudinary.Upload(uploadParams);
+                }
+                photoForCreationDto.Url = uploadResults.Uri.ToString();
+                photoForCreationDto.PublicId = uploadResults.PublicId;
 
-            var photo = _mapper.Map<Photo>(photoForCreationDto);
+                var photo = _mapper.Map<Photo>(photoForCreationDto);
 
-            if (!userFromRepo.Photos.Any(u => u.IsMain))
-                photo.IsMain = true;
+                if (!userFromRepo.Photos.Any(u => u.IsMain))
+                    photo.IsMain = true;
 
-            userFromRepo.Photos.Add(photo);
+                userFromRepo.Photos.Add(photo);
 
-            if (await _datingRepository.SaveAll())
-            {
-                var photoToReturn = _mapper.Map<PhotoToReturnDto>(photo);
-                return CreatedAtRoute("GetPhoto", new { userId = userId, id = photo.Id }, photoToReturn);
+                if (await _datingRepository.SaveAll())
+                {
+                    var photoToReturn = _mapper.Map<PhotoToReturnDto>(photo);
+                    return CreatedAtRoute("GetPhoto", new { userId = userId, id = photo.Id }, photoToReturn);
+                }
             }
 
             return BadRequest("Could not add the photo");
