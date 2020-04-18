@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace DatingApp.API.Data
         {
             _context.Remove(entity);
         }
+
+        public async Task<Photo> GetMainPhotoForUser(int userId) => await _context.Photos.Where(p => p.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
 
         public async Task<Photo> GetPhoto(int id)
         {
