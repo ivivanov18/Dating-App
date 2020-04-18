@@ -1,5 +1,5 @@
 import { AlertifyService } from './../../_services/alertify.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { Photo } from 'src/app/_models/photo';
 import { environment } from './../../../environments/environment';
@@ -15,6 +15,7 @@ const URL = 'path_to_api';
 })
 export class PhotoEditComponent implements OnInit {
     @Input() photos: Photo[];
+    @Output() setPhotoUrl = new EventEmitter();
     public uploader: FileUploader;
     public hasBaseDropZoneOver = false;
     currentMain: Photo;
@@ -68,6 +69,7 @@ export class PhotoEditComponent implements OnInit {
                     )[0];
                     this.currentMain.isMain = false;
                     photo.isMain = true;
+                    this.setPhotoUrl.emit(photo.url);
                 },
                 (error) => {
                     this.alertify.error(error);

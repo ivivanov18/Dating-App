@@ -103,7 +103,10 @@
                         </form>
                     </tab>
                     <tab heading="Edit Photos">
-                        <app-photo-edit [photos]="user.photos"></app-photo-edit>
+                        <app-photo-edit
+                            [photos]="user.photos"
+                            (setPhotoUrl)="setPhotoUrlForUser($event)"
+                        ></app-photo-edit>
                     </tab>
                 </tabset>
             </div>
