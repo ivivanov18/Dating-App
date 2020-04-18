@@ -34,7 +34,7 @@ export class PhotoEditComponent implements OnInit {
         this.uploader = new FileUploader({
             url:
                 environment.apiUrl +
-                'user/' +
+                'users/' +
                 this.authService.decodedToken.nameid +
                 '/photos',
             authToken: `Bearer ${localStorage.getItem('token')}`,
@@ -43,5 +43,15 @@ export class PhotoEditComponent implements OnInit {
             autoUpload: false,
             maxFileSize: 10 * 1024 * 1024,
         });
+
+        this.uploader.onAfterAddingFile = (file) =>
+            (file.withCredentials = false);
+
+        this.uploader.onSuccessItem = (item, response, status, header) => {
+            if (response) {
+                const res: Photo = JSON.parse(response);
+                this.photos.push(res);
+            }
+        };
     }
 }
