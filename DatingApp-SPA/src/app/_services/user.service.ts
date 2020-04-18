@@ -29,4 +29,10 @@ export class UserService {
     updateUser(id, user: User) {
         return this.httpClient.put(this.baseUrl + 'users/' + id, user);
     }
+
+    setMainPhoto(userId, photoId) {
+        return this.httpClient.post(
+            this.baseUrl + 'users/' + userId + '/photos/' + photoId + '/setMain', null
+        );
+    }
 }

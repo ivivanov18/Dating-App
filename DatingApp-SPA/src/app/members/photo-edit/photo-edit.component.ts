@@ -1,3 +1,4 @@
+import { AlertifyService } from './../../_services/alertify.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { Photo } from 'src/app/_models/photo';
@@ -16,10 +17,12 @@ export class PhotoEditComponent implements OnInit {
     @Input() photos: Photo[];
     public uploader: FileUploader;
     public hasBaseDropZoneOver = false;
+    currentMain: Photo;
 
     constructor(
         private authService: AuthService,
-        private userService: UserService
+        private userService: UserService,
+        private alertify: AlertifyService
     ) {}
 
     ngOnInit() {
@@ -53,5 +56,22 @@ export class PhotoEditComponent implements OnInit {
                 this.photos.push(res);
             }
         };
+    }
+
+    setMainPhoto(photo: Photo) {
+        this.userService
+            .setMainPhoto(this.authService.decodedToken.nameid, photo.id)
+            .subscribe(
+                (next) => {
+                    this.currentMain = this.photos.filter(
+                        (p) => p.isMain === true
+                    )[0];
+                    this.currentMain.isMain = false;
+                    photo.isMain = true;
+                },
+                (error) => {
+                    this.alertify.error(error);
+                }
+            );
     }
 }
