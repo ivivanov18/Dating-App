@@ -64,7 +64,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
         BrowserAnimationsModule,
         BsDropdownModule.forRoot(),
         TabsModule.forRoot(),
-        RouterModule.forRoot(appRoutes, { enableTracing: true }),
+        RouterModule.forRoot(appRoutes, { enableTracing: false }),
         JwtModule.forRoot({
             config: {
                 tokenGetter,

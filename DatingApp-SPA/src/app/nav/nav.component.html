@@ -13,6 +13,12 @@
             </li>
         </ul>
         <div dropdown class="dropdown" *ngIf="isLoggedIn()">
+            <span class="mr-1">
+                <img
+                    src="{{ authService.currentUser.photoUrl }}"
+                    alt="{{ authService.currentUser.knownAs }}"
+                />
+            </span>
             <a dropdownToggle class="dropdown-toggle text-light">
                 Welcome {{ authService.decodedToken?.unique_name }}
             </a>
