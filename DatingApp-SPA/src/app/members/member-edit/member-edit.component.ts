@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { NgForm } from '@angular/forms';
+import { Photo } from 'src/app/_models/photo';
 
 @Component({
     selector: 'app-member-edit',
@@ -47,5 +48,9 @@ export class MemberEditComponent implements OnInit {
 
     setPhotoUrlForUser(url: string): void {
         this.user.photoUrl = url;
+    }
+
+    setPhotos(photos: Photo[]): void {
+        this.user.photos = [...photos];
     }
 }

@@ -16,6 +16,7 @@ const URL = 'path_to_api';
 export class PhotoEditComponent implements OnInit {
     @Input() photos: Photo[];
     @Output() setPhotoUrl = new EventEmitter();
+    @Output() setPhotos = new EventEmitter();
     public uploader: FileUploader;
     public hasBaseDropZoneOver = false;
     currentMain: Photo;
@@ -79,5 +80,24 @@ export class PhotoEditComponent implements OnInit {
                     this.alertify.error(error);
                 }
             );
+    }
+
+    deletePhoto(photo: Photo): void {
+        this.alertify.confirm('Are sure you want to delete the photo?', () => {
+            const { nameid } = this.authService.decodedToken;
+            this.userService.deletePhoto(nameid, photo.id).subscribe(
+                (next) => {
+                    const withoutDeletedPhotos = this.photos.filter(
+                        (p) => p.id !== photo.id
+                    );
+                    // this.setPhotos.emit(withoutDeletedPhotos);
+                    this.photos = [...withoutDeletedPhotos];
+                    this.alertify.message('Photo deleted successfully');
+                },
+                (error) => {
+                    this.alertify.error(error);
+                }
+            );
+        });
     }
 }

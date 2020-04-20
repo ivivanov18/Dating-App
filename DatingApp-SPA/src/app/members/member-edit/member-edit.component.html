@@ -106,6 +106,7 @@
                         <app-photo-edit
                             [photos]="user.photos"
                             (setPhotoUrl)="setPhotoUrlForUser($event)"
+                            (setPhotos)="setPhotos($event)"
                         ></app-photo-edit>
                     </tab>
                 </tabset>
