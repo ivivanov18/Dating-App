@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../_models/user';
 
@@ -12,8 +13,14 @@ export class AuthService {
     jwtHelperService = new JwtHelperService();
     decodedToken: any;
     currentUser: User;
+    photoUrl = new BehaviorSubject<string>('../../assets/user.png');
+    currentPhotoUrl = this.photoUrl.asObservable();
 
     constructor(private http: HttpClient) {}
+
+    changeMemberPhoto(newPhotoUrl: string): void {
+        this.photoUrl.next(newPhotoUrl);
+    }
 
     login(model: any) {
         return this.http.post(this.baseUrl + 'login', model).pipe(
@@ -26,7 +33,7 @@ export class AuthService {
                         user.token
                     );
                     this.currentUser = user.user;
-                    console.log(this.currentUser);
+                    this.changeMemberPhoto(user.user.photoUrl);
                 }
             })
         );
