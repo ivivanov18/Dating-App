@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Text;
 using AutoMapper;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
@@ -35,6 +37,7 @@ namespace DatingApp.API.Helpers
             CreateMap<UserForUpdateDto, User>();
             CreateMap<Photo, PhotoToReturnDto>();
             CreateMap<PhotoForCreateDto, Photo>();
+            CreateMap<UserForRegisterDto, User>().ForMember(dest => dest.Password, opts => opts.MapFrom(src => Encoding.ASCII.GetBytes(src.Password)));
         }
 
     }
