@@ -22,18 +22,21 @@ export class AuthService {
         this.photoUrl.next(newPhotoUrl);
     }
 
-    login(model: any) {
-        return this.http.post(this.baseUrl + 'login', model).pipe(
+    login(user: User) {
+        return this.http.post(this.baseUrl + 'login', user).pipe(
             map((response: any) => {
-                const user = response;
-                if (user && user.token) {
-                    localStorage.setItem('token', user.token);
-                    localStorage.setItem('user', JSON.stringify(user.user));
-                    this.decodedToken = this.jwtHelperService.decodeToken(
-                        user.token
+                const userCreated = response;
+                if (userCreated && userCreated.token) {
+                    localStorage.setItem('token', userCreated.token);
+                    localStorage.setItem(
+                        'user',
+                        JSON.stringify(userCreated.user)
                     );
-                    this.currentUser = user.user;
-                    this.changeMemberPhoto(user.user.photoUrl);
+                    this.decodedToken = this.jwtHelperService.decodeToken(
+                        userCreated.token
+                    );
+                    this.currentUser = userCreated.user;
+                    this.changeMemberPhoto(userCreated.user.photoUrl);
                 }
             })
         );
