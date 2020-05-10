@@ -8,8 +8,7 @@ namespace DatingApp.API.Helpers
 
         private int pageSize = 10;
 
-        private int PageSize;
-        public int MyProperty
+        public int PageSize
         {
             get { return pageSize; }
             set { PageSize = value <= MaxPageSize ? value : MaxPageSize; }
