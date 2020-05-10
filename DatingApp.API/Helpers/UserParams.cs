@@ -11,7 +11,7 @@ namespace DatingApp.API.Helpers
         public int PageSize
         {
             get { return pageSize; }
-            set { PageSize = value <= MaxPageSize ? value : MaxPageSize; }
+            set { pageSize = value <= MaxPageSize ? value : MaxPageSize; }
         }
 
     }
