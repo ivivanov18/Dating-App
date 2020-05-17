@@ -10,8 +10,17 @@ import { UserService } from 'src/app/_services/user.service';
     styleUrls: ['./member-list.component.css'],
 })
 export class MemberListComponent implements OnInit {
-    public users: User[];
-    public pagination: Pagination;
+    users: User[];
+    pagination: Pagination;
+    minAge = 18;
+    maxAge = 99;
+    user: User = JSON.parse(localStorage.getItem('user'));
+    genderList = [
+        { value: 'male', display: 'Males' },
+        { value: 'female', display: 'Females' },
+    ];
+    userParams: any = {};
+
     constructor(
         private route: ActivatedRoute,
         private userService: UserService
@@ -22,6 +31,18 @@ export class MemberListComponent implements OnInit {
             this.users = data.users.result;
             this.pagination = data.users.pagination;
         });
+        this.userParams.gender =
+            this.user.gender === 'male' ? 'female' : 'male';
+        this.userParams.minAge = 18;
+        this.userParams.maxAge = 99;
+    }
+
+    resetFilters() {
+        this.userParams.gender =
+            this.user.gender === 'male' ? 'female' : 'male';
+        this.userParams.minAge = 18;
+        this.userParams.maxAge = 99;
+        this.loadUsers();
     }
 
     pageChanged(event: any): void {
@@ -31,7 +52,11 @@ export class MemberListComponent implements OnInit {
 
     loadUsers() {
         this.userService
-            .getUsers(this.pagination.currentPage, this.pagination.itemsPerPage)
+            .getUsers(
+                this.pagination.currentPage,
+                this.pagination.itemsPerPage,
+                this.userParams
+            )
             .subscribe((res: PaginatedResult<User[]>) => {
                 this.users = res.result;
                 this.pagination = res.pagination;
