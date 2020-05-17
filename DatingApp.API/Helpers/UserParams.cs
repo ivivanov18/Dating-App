@@ -18,5 +18,9 @@ namespace DatingApp.API.Helpers
 
         public string Gender { get; set; }
 
+        public int MinAge { get; set; }
+
+        public int MaxAge { get; set; }
+
     }
 }
