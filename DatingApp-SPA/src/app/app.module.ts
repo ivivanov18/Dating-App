@@ -12,6 +12,7 @@ import {
     TabsModule,
     BsDatepickerModule,
     PaginationModule,
+    ButtonsModule,
 } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -74,6 +75,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
         TabsModule.forRoot(),
         BsDatepickerModule.forRoot(),
         PaginationModule.forRoot(),
+        ButtonsModule.forRoot(),
         RouterModule.forRoot(appRoutes, { enableTracing: false }),
         JwtModule.forRoot({
             config: {
