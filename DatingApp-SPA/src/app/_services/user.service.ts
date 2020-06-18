@@ -86,4 +86,11 @@ export class UserService {
             this.baseUrl + 'users/' + userId + '/photos/' + photoId
         );
     }
+
+    sendLike(id: number, recipientId: number) {
+        return this.httpClient.post(
+            `${this.baseUrl}users/${id}/like/${recipientId}`,
+            {}
+        );
+    }
 }
